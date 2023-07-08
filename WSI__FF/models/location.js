@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const qrcode = require('qrcode');
-const fs = require('fs');
+//const fs = require('fs');
 
 const LocationSchema = new Schema({
     name: { type: String, required: true },
