@@ -3,21 +3,59 @@ const Schema = mongoose.Schema;
 const qrcode = require('qrcode');
 //const fs = require('fs');
 
+
+
+
+
+
+
+
 const LocationSchema = new Schema({
     name: { type: String, required: true },
-    subLocations: [{ type: Schema.Types.ObjectId, ref: "Location", required: false }],
-    domLocations: [{ type: Schema.Types.ObjectId, ref: "Location", required: true }],
+    domLocations: {
+        type: Schema.Types.ObjectId,
+        ref: "Location",
+        required: false,
+        default: function () {
+            // Return a default value based on your condition here
+            // In this example, we'll use null as the default value, but you can set it to any specific ObjectId or custom value as needed.
+            return null;
+        },
+        validate: {
+            validator: function (value) {
+                // The validation function to check if the value meets your requirements
+                // In this example, we're allowing null (for top-level locations) or a valid ObjectId reference (for child locations)
+                return value === null || mongoose.isValidObjectId(value);
+            },
+            message: props => `Invalid domLocation: ${props.value}. A valid ObjectId reference or null is required.`
+        }
+    },
     QRString: { type: String }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 LocationSchema.virtual("url").get(function () {
-    return "/catalog/locations/" + this.id;
+    return "/catalog/location/" + this.id;
 });
 
 LocationSchema.virtual("QRpath").get(function () {
-    return "/QRCodes/" + this.id;
+    return "/QRCodes/" + this.id + ".png";
 });
-
 async function generateAndSaveQRCode(next) {
     const qrCodePath = '/QRCodes/' + this._id; // Create the QR code path using the object ID
 
@@ -34,18 +72,8 @@ async function generateAndSaveQRCode(next) {
     next();
 }
 
-async function checkLocationExists(name) {
-    try {
-        const existingLocation = await Location.findOne({ name });
-        return !!existingLocation; // Returns true if a location with the given name already exists
-    } catch (error) {
-        // Handle any errors that occur during the database query
-        console.error('Error checking location:', error);
-        throw error;
-    }
-}
+
 
 // Register the pre-hook middleware on the schema
 LocationSchema.pre('save', generateAndSaveQRCode);
-LocationSchema.pre('checkLocationExists', checkLocationExists);
 module.exports = mongoose.model("Location", LocationSchema);

@@ -15,4 +15,21 @@ block content
       li #[strong Items:] !{data.item_count}
       li #[strong Location:] !{data.location_count}
 
-    button(type="button" onclick="window.location.href='/catalog/location/create'") #[strong Create root location]
+    button(type="button" onclick="window.location.href='/catalog/location/create'") #[strong Add root location]
+
+  if  data.location_list.length == 0
+    p no location to show 
+  else 
+    table
+      tbody 
+        each location in data.location_list
+          -let matchingItems = data.item_list.filter(item => item.id === location.id)
+          tr 
+            td 
+              a(href=location.url)  #[strong #{location.name}] 
+            td
+              a(href='/catalog/item/create/' + location.id) #[strong Add Item]
+            td #[strong Item Count:] #{matchingItems.length}
+              
+              
+                

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+        select(name="locationSelect")
+          each location in data.locations
+            label(for='location') Location:
+              option(value=data.selectedLocation,name='location') #{location.name}
+              
+        label(for='name') Name:
+        input#name.form-control(type='text', placeholder='Screw, Ducktape, Hammmer..' name='name' value=(undefined===item ? '' : item.name))
+        label(for='count') Count:
+        input#name.form-control(type='number', placeholder='1-100' name='count' value=(undefined===item ? '' : item.count))
+    button.btn.btn-primary(type='submit') Create
+
+  if errors
+   ul
+    for error in errors
+     li!= error.msg

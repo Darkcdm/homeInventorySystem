@@ -14,10 +14,10 @@ router.get("/", itemController.index);
 
 
 //GET request for creating an item. NOTE this must come before routes that display items (uses id).
-router.get("/item/create", itemController.item_create_get);
+router.get("/item/create/:locationid", itemController.item_create_get);
 
 //POST request for creating item.
-router.post("/item/create", itemController.item_create_post);
+router.post("/item/create/:locationid", itemController.item_create_post);
 
 //GET request to delete item.
 router.get("/item/:id/delete", itemController.item_delete_get);

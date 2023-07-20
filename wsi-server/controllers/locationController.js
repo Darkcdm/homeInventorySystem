@@ -19,8 +19,14 @@ exports.location_create_post = [
     (req, res, next) => {
         const errors = validationResult(req);
 
+        let locationId = null;
+
+        if (req.body.domLocations !== undefined) {
+            locationId = req.body.domLocations;
+        }
+
         //create a location object with escaped and trimmed data
-        const location = new Location({ name: req.body.name });
+        const location = new Location({ name: req.body.name, domLocations: null });
 
         if (!errors.isEmpty()) {
             //There are errors. Render the form again with asnitized values/error mesages.
@@ -76,8 +82,32 @@ exports.location_update_post = (req, res) => {
 };
 
 // Handle location detail on GET.
-exports.location_detail = (req, res) => {
-    res.send("NOT IMPLEMENTED: location detail GET");
+exports.location_detail = (req, res, next) => {
+    async.parallel(
+        {
+            location(callback) {
+                Location.findById(req.params.id).exec(callback);
+            },
+            locationItems(callback) {
+                Item.find({ location: req.params.id }).exec(callback);
+            }
+        },
+        (err, results) => {
+            if (err) {
+                return next(err);
+            }
+            if (results.location == null) {
+                const err = new Error("Location not found");
+                err.status = 404;
+                return next(err);
+            }
+            res.render("location_detail", {
+                title: "Location Detail",
+                location: results.location,
+                locationItems: results.locationItems,
+            });
+        }
+    )
 };
 
 // Handle location list on GET.
