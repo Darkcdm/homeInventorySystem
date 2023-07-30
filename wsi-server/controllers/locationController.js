@@ -61,9 +61,76 @@ exports.location_create_post = [
     },
 ];
 
+exports.subLocation_create_get = (req, res) => {
+    res.render("sub_location_form", { title: "Create Sub Location" });
+};
+
+exports.subLocation_create_post = [
+    //sanitize and validate the name field
+    body("name", "Location name required").trim().isLength({ min: 1 }).escape(),
+
+    //Process request after validation and sanitizaion
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        let locationId = null;
+
+        if (req.body.domLocations !== undefined) {
+            locationId = req.body.domLocations;
+        }
+
+        //create a location object with escaped and trimmed data
+        const location = new Location({ name: req.body.name, domLocations: null });
+
+        if (!errors.isEmpty()) {
+            //There are errors. Render the form again with asnitized values/error mesages.
+            res.render("location_form", {
+                title: "Create location",
+                location,
+                errors: errors.array(),
+            });
+            return;
+        } else {
+            //Data from form is valid.
+            //check if location with same name alread exists.
+            Location.findOne({ name: req.body.name }).exec((err, found_location) => {
+                if (err) {
+                    return next(err);
+                }
+
+                if (found_location) {
+                    //Genre exists, redirect to its detail page
+                    res.redirect(found_location.url);
+                } else {
+                    location.save((err) => {
+                        if (err) {
+                            return next(err);
+                        }
+                        //Genre saved. redirect to genre detail page
+                        res.redirect(location.url);
+                    });
+                }
+            });
+        }
+    },
+];
+
 // Display location delete form on GET.
 exports.location_delete_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: location delete GET");
+    async.parallel(
+        {
+            assignedItems(callback) {
+                Location.deleteOne({ id: req.params.id }).exec(callback);
+            }
+        },
+        (err, results) => {
+            if (!err) {
+                res.redirect("/catalog/");
+            } else {
+                res.send(err);
+            }
+        }
+    )
 };
 
 // Handle location delete on POST.

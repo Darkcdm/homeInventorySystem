@@ -20,7 +20,9 @@ const ItemSchema = new Schema({
 
 
 
-
+ItemSchema.virtual("icPath").get(function () {
+    return "/itemPics/" + this.id + ".png";
+});
 
 
 ItemSchema.virtual("url").get(function () {

@@ -22,10 +22,33 @@ exports.index = (req, res) => {
             }
         },
         (err, results) => {
+            let locations = results.location_list;
+
+            let items = results.item_list;
+
+
+
+            for (let i = 0; i < locations.length; i++) {
+
+                for (let j = 0; j < items.length; j++) {
+                    locations[i].items = new Array;
+
+
+                    if (items[j].location == locations[i].id) {
+                        locations[i].items.push(items[j]);
+                        items = [...items.slice(0, j), ...items.slice(j + 1)];
+                    }
+
+                }
+            }
+
+
             res.render("index", {
                 title: "WSI Home Page",
                 error: err,
-                data: results
+                data: results,
+                locations: locations,
+                items: items,
             })
         }
 
@@ -100,22 +123,46 @@ exports.item_create_post = [
 ]
 // Display item delete form on GET.
 exports.item_delete_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: item delete GET");
+    async.parallel(
+        {
+            delete(callback) {
+                Item.deleteOne({ id: req.params.id }).exec(callback);
+            }
+        },
+        (err, results) => {
+
+            if (!err) {
+                res.redirect("/catalog/");
+            } else {
+                res.send(err);
+            }
+        }
+    )
 };
 
 // Handle item delete on POST.
-exports.item_delete_post = (req, res) => {
-    res.send("NOT IMPLEMENTED: item delete POST");
-};
+exports.item_delete_post = [
+
+    body("location", "location needs to be selected").isJSON(),
+    body("id", "id needs to be selected"),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+        console.log(req.body);
+    }
+]
 
 // Display item update form on GET.
 exports.item_update_get = (req, res) => {
-    res.send("NOT IMPLEMENTED: item update GET");
+    res.send("NOT IMPLEMENTED: item GET UPDATE");
 };
 
 // Display item update form on POST.
 exports.item_update_post = (req, res) => {
+
+    console.log(req.body);
     res.send("NOT IMPLEMENTED: item update POST");
+
 };
 
 // Handle item detail on GET.
@@ -156,7 +203,7 @@ exports.item_detail = (req, res, next) => {
                 return next(err);
             }
             if (results.location == null) {
-                const err = new Error("location not found");
+                const err = new Error("location not found or not correctly assigned");
                 err.status = 404;
                 return next(err);
             }

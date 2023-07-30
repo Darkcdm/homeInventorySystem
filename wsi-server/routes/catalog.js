@@ -26,7 +26,7 @@ router.get("/item/:id/delete", itemController.item_delete_get);
 router.post("/item/:id/delete", itemController.item_delete_post);
 
 // GET request to update item.
-router.get("/item/:id/update", itemController.item_update_get);
+router.get("/item/:id/update/:locationid", itemController.item_update_get);
 
 // POST request to update item.
 router.post("/item/:id/update", itemController.item_update_post);
@@ -46,6 +46,11 @@ router.get("/location/create", locationController.location_create_get);
 
 //POST request for creating location.
 router.post("/location/create", locationController.location_create_post);
+
+router.get("/location/:id/create/", locationController.subLocation_create_get);
+
+//POST request for creating location.
+router.post("/location/:id/create", locationController.subLocation_create_post);
 
 //GET request to delete location.
 router.get("/location/:id/delete", locationController.location_delete_get);
