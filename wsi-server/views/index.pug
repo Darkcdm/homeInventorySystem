@@ -19,7 +19,11 @@ block content
 
   if  data.location_list.length == 0
     p no location to show 
-  else 
+  else
+     
+    each location in locations
+      div (style="")
+
     table
       tbody 
         each location in locations
