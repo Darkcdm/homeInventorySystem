@@ -6,6 +6,9 @@ To run your project, navigate to the directory and run one of the following npm 
   without a Mac
 - npm run web
 
+- start server:
+  npm run devstart
+
 TODO:
 
 - []: REDO the Index from Table to Div
