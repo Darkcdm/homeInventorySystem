@@ -1,0 +1,19 @@
+extends layout
+
+
+block content
+
+    h1 #[bold Item Creation Form]
+
+    form(method='POST' action='/his/item/create')
+        div.form-group
+            label(for='name') Name:
+            input#name.form-control(type='text', placeholder='Screw, bolt...' name='name' value=(undefined===item ? '' : item.name))
+            lavel(for='count') Count:
+            input#name.form-control(type='number', placeholder='0...100' name='count' value=(undefined===item ? 0 : item.count))
+        button.btn.btn-primary(type='submit') create item
+
+    if errors
+        ul
+            for error in errors
+                li!= error.msg

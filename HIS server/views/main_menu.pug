@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #[em Home Inventory System], a very basic Express website developed as a showcase for Daniel Knotek.
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
+
+
+  p #[bold Items Count: ] #{results.item_count}
+  p #[bold Locations Count: ] #{results.location_count}
+
+
+  div.mainContent
+
+  script(src="/javascripts/renderContent.js")
+  script. 
+    render(!{locationsJSON},!{itemsJSON}, document.querySelector('.mainContent'));
+
+  
+  for location in results.locations
+    div.v_line
+      p #[bold #{location.name}] ItemCount: #{location.items.length}
+        for item in location.items
+          p #{item.name}
+        form(method='POST' action='/his/item/create')
+          div.form-group
+            input(name="name", type="text", placeholder="Name")
+            input(name="count", type="number", placeholder="Count", value="1")
+            input(name="parentLocation", type="hidden", value=location.id)
+          button.btn.btn-primary(type='submit') Add an Item
+      form(method='POST' action='/his/location/create')
+        div.form-group
+          input(name="parentLocation", type="hidden", value=location.id)
+          input(name="name", type="text", placeholder="Name")
+        button.btn.btn-primary(type='submit') Add a Location
+
+  form(method='POST' action='/his/location/create')
+    div.form-group
+      input(name="name", type="text", placeholder="Name") 
+    button.btn.btn-primary(type='submit') create Location
+          
+  script
+    include colourCoding.js
+
