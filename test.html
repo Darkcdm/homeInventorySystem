@@ -7,7 +7,8 @@
     <title>Your Page Title</title>
     <style>
         /* Common style for the blue line */
-        div {
+        .main-div {
+            border-left: 4px solid blue;
             padding-left: 10px;
         }
 
@@ -26,18 +27,42 @@
 </head>
 
 <body>
-    <div style="border-left: 4px solid blue;">
+    <div class="main-div">
         <h2>First Div</h2>
         <p>This is the content of the first div.</p>
-        <div style="border-left: 4px solid green;">
-            <h2>third Div</h2>
-            <p>This is the content of the first div.</p>
+        <div class="third-div">
+            <h2>Third Div</h2>
+            <p>This is the content of the third div.</p>
         </div>
     </div>
-    <div style="border-left: 4px solid red;">
+    <div class="second-div">
         <h2>Second Div</h2>
         <p>This is the content of the second div.</p>
     </div>
+
+    <script>
+        // Function to generate a random HSL color with enough contrast
+        function getRandomColor() {
+            const hue = Math.floor(Math.random() * 360); // 0 to 359
+            const saturation = Math.floor(Math.random() * 50) + 50; // 50 to 100
+            const lightness = Math.floor(Math.random() * 20) + 40; // 40 to 60
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        }
+
+        // Function to color divs with a specific class
+        function colorDivsWithClass(className) {
+            const elements = document.querySelectorAll(`.${className}`);
+            elements.forEach(element => {
+                element.style.borderLeftColor = getRandomColor();
+            });
+        }
+
+        // Call the function to color the specific divs
+        colorDivsWithClass('main-div');
+        colorDivsWithClass('second-div');
+        colorDivsWithClass('third-div');
+    </script>
+
 </body>
 
 </html>
