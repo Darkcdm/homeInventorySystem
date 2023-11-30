@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const mongoDB =
 	//"mongodb+srv://dark:XYP9BWssmgujkUE@cluster0.vzr0dga.mongodb.net/local_library?retryWrites=true&w=majority";
 	//"mongodb+srv://darksniped:l90Do81oMNv8E8Yq@cluster0.huc2vt6.mongodb.net/?retryWrites=true&w=majority";
-	"mongodb://admin:admin@127.0.0.1:27017/?retryWrites=true&w=majority";
+	"mongodb://admin:<password>@127.0.0.1:27017/?retryWrites=true&w=majority";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));

@@ -1,68 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="mainContent">
+    <div class="v_line" style="border-left-color: rgb(55, 205, 90);">
+        <h5><strong>Location 1</strong> ItemCount: 0</h5>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Page Title</title>
-    <style>
-        /* Common style for the blue line */
-        .main-div {
-            border-left: 4px solid blue;
-            padding-left: 10px;
-        }
+        <!-- Card deck for items -->
+        <div class="card-deck">
+            <!-- Item card 1 -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Item 1</strong></h5>
+                    <p class="card-text">ItemCount: 0</p>
+                </div>
+            </div>
 
-        /* Style for the first div */
-        .third-div {
-            border-left: 4px solid green;
-            padding-left: 10px;
-        }
+            <!-- Item card 2 -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Test</strong></h5>
+                    <p class="card-text">ItemCount: 0</p>
+                </div>
+            </div>
 
-        /* Style for the second div */
-        .second-div {
-            border-left: 4px solid red;
-            padding-left: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="main-div">
-        <h2>First Div</h2>
-        <p>This is the content of the first div.</p>
-        <div class="third-div">
-            <h2>Third Div</h2>
-            <p>This is the content of the third div.</p>
+            <!-- Add more item cards as needed -->
         </div>
+
+        <!-- Item creation form -->
+        <form method="POST" action="/his/item/create">
+            <div class="form-group">
+                <input name="name" type="text" placeholder="Name">
+                <input name="count" type="number">
+                <input name="location" type="hidden" value="6567bef1422d5ef4013d42df">
+                <button class="btn btn-primary" type="submit">Add an Item</button>
+            </div>
+        </form>
+
+        <!-- Location creation form -->
+        <form method="POST" action="/his/location/add">
+            <div class="form-group">
+                <input name="name" type="text" placeholder="Name">
+                <input name="location" type="hidden" value="6567bef1422d5ef4013d42df">
+                <button class="btn btn-primary" type="submit">Add a Location</button>
+            </div>
+        </form>
     </div>
-    <div class="second-div">
-        <h2>Second Div</h2>
-        <p>This is the content of the second div.</p>
-    </div>
 
-    <script>
-        // Function to generate a random HSL color with enough contrast
-        function getRandomColor() {
-            const hue = Math.floor(Math.random() * 360); // 0 to 359
-            const saturation = Math.floor(Math.random() * 50) + 50; // 50 to 100
-            const lightness = Math.floor(Math.random() * 20) + 40; // 40 to 60
-            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        }
-
-        // Function to color divs with a specific class
-        function colorDivsWithClass(className) {
-            const elements = document.querySelectorAll(`.${className}`);
-            elements.forEach(element => {
-                element.style.borderLeftColor = getRandomColor();
-            });
-        }
-
-        // Call the function to color the specific divs
-        colorDivsWithClass('main-div');
-        colorDivsWithClass('second-div');
-        colorDivsWithClass('third-div');
-    </script>
-
-</body>
-
-</html>
+    <!-- Repeat the above structure for additional locations or customize as needed -->
+</div>

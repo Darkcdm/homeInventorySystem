@@ -15,13 +15,13 @@ exports.create_item_get = (req, res, next) => {
 exports.create_item_post = [
     body("name", "Item name is required").trim().isLength({ min: 1 }).escape(),
     body('count', "Item count is required").escape(),
-    body("parentLocation", "Parent Location is not set").escape(),
+    body("location", "Parent Location is not set").escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
 
         console.log(req.body);
-        const item = new Item({ name: req.body.name, count: req.body.count, location: req.body.parentLocation });
+        const item = new Item({ name: req.body.name, count: req.body.count, location: req.body.location });
 
 
         if (!errors.isEmpty()) {

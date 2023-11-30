@@ -34,11 +34,15 @@ router.post('/item/create', item_controller.create_item_post);
 // LOCATION ROUTES //
 
 
+
 //GET create
 router.get("/location/create", location_controller.create_location_get);
 
 //POST create
 router.post("/location/create", location_controller.create_location_post);
+
+//POST add
+router.post("/location/add", location_controller.add_location_post);
 //GET delete
 
 //POST delete
@@ -47,10 +51,10 @@ router.post("/location/create", location_controller.create_location_post);
 
 //POST update
 
+
 //GET detail
 router.get('/location/:id', location_controller.location_detail);
 //POST detail
-
 
 
 
