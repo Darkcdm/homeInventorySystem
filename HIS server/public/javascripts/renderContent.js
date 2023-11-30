@@ -55,9 +55,21 @@ function renderLocation(location, contentDiv) {
   divLine.className = "v_line";
   contentDiv.appendChild(divLine);
 
-  var locationHeader = document.createElement('h5');
-  locationHeader.innerHTML = `<bold>${location.name}</location>`;
-  divLine.appendChild(locationHeader);
+
+
+
+  var locationCard = document.createElement('div');
+  locationCard.className = 'card';
+  divLine.appendChild(locationCard);
+
+  var locationCardBody = document.createElement('div');
+  locationCardBody.className = 'card-body';
+  locationCard.appendChild(locationCardBody);
+
+  var LocationNameHeader = document.createElement('h5');
+  LocationNameHeader.className = 'card-title';
+  LocationNameHeader.innerHTML = `<strong>${location.name}</strong>`;
+  locationCard.appendChild(LocationNameHeader);
 
 
 

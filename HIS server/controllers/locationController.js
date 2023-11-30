@@ -25,19 +25,22 @@ exports.create_location_post = [
 
         if (!errors.isEmpty()) {
             //There are errors. Render the form again with asnitized values/error mesages.
-            console.log(errors);
+            req.session.formErrors = errors;
 
-            res.render("location_form", {
-                location,
-                errors: errors.array(),
-            });
+            // Redirect to the main menu controller
+            res.redirect('/');
             return;
         } else {
             //Data from form is valid.
             //check if Genre with same name alread exists.
             Location.findOne({ name: req.body.name }).exec((err, found_location) => {
                 if (err) {
-                    return next(err);
+                    //There are errors. Render the form again with asnitized values/error mesages.
+                    req.session.formErrors = err;
+
+                    // Redirect to the main menu controller
+                    res.redirect('/');
+                    return;
                 }
 
                 if (found_location) {
@@ -71,19 +74,21 @@ exports.add_location_post = [
 
         if (!errors.isEmpty()) {
             //There are errors. Render the form again with asnitized values/error mesages.
-            console.log(errors);
+            req.session.formErrors = errors;
 
-            res.render("location_form", {
-                location,
-                errors: errors.array(),
-            });
+            // Redirect to the main menu controller
+            res.redirect('/');
             return;
         } else {
             //Data from form is valid.
             //check if Genre with same name alread exists.
             Location.findOne({ name: req.body.name }).exec((err, found_location) => {
                 if (err) {
-                    return next(err);
+                    //There are errors. Render the form again with asnitized values/error mesages.
+                    req.session.formErrors = err;
+
+                    // Redirect to the main menu controller
+                    res.redirect('/');
                 }
 
                 if (found_location) {

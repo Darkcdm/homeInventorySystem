@@ -25,7 +25,11 @@ exports.create_item_post = [
 
 
         if (!errors.isEmpty()) {
-            alert(errors);
+            //There are errors. Render the form again with asnitized values/error mesages.
+            req.session.formErrors = errors;
+
+            // Redirect to the main menu controller
+            res.redirect('/');
             return;
         } else {
 

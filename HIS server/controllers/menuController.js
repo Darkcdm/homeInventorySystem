@@ -1,6 +1,8 @@
 const Item = require("../models/item");
 const Location = require("../models/location");
 
+const { body, validationResult } = require("express-validator");
+
 const async = require("async");
 
 exports.index = (req, res, next) => {
@@ -20,12 +22,21 @@ exports.index = (req, res, next) => {
             },
             items(callback) {
                 Item.find().exec(callback);
+            },
+            formErrors(callback) {
+
+                const errors = req.session.formErrors || {};
+
+                req.session.formErrors = null;
+
+                callback(null, errors);
             }
         },
         (err, results) => {
             if (err) {
                 return next(err);
             }
+            console.log("TEST", results.formErrors.errors);
 
             if (results.locations == null) {
                 //No locations found
@@ -36,6 +47,7 @@ exports.index = (req, res, next) => {
             res.render("main_menu", {
                 title: "Main Menu",
                 errors: err,
+                formErrors: results.formErrors.errors,
                 results: results,
                 locationsJSON: JSON.stringify(results.locations),
                 itemsJSON: JSON.stringify(results.items)
